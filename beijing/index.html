@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#100d0f">
+  <title>北境 · 命运回信</title>
+  <style>
+    @font-face{font-family:Fell;src:url('assets/fonts/im-fell-english-v14-latin-regular.woff2')}@font-face{font-family:Baskerville;src:url('assets/fonts/libre-baskerville-v16-latin-regular.woff2')}@font-face{font-family:Baskerville;src:url('assets/fonts/libre-baskerville-v16-latin-700.woff2');font-weight:700}
+    :root{--ink:#f7f0e8;--muted:#b8aaa2;--wine:#7b1f2d;--gold:#d7aa67;--line:rgba(215,170,103,.28);--bg:#100d0f}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink)}body{font-family:Baskerville,Georgia,serif;overflow-x:hidden}
+    body:before,body:after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(70px);opacity:.45;pointer-events:none}.body:before{display:none}body:before{width:260px;height:260px;left:-130px;top:10%;background:#5b1626}body:after{width:360px;height:360px;right:-180px;bottom:-100px;background:#3a241a}
+    main{min-height:100svh;display:grid;place-items:center;padding:28px 20px}.stage{width:min(100%,520px);min-height:min(780px,calc(100svh - 56px));position:relative;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line);padding:28px 24px 22px;background:linear-gradient(160deg,rgba(54,23,27,.76),rgba(16,13,15,.96) 58%);box-shadow:0 24px 70px #0008;overflow:hidden}.stage:before{content:"✦";position:absolute;right:20px;top:11px;color:var(--gold);font-size:13px}.brand{text-align:center;letter-spacing:.14em;font-size:12px;color:var(--gold);text-transform:uppercase}.brand span{font-family:Fell,serif;font-size:18px;letter-spacing:.05em;text-transform:none}.intro{text-align:center;margin:auto 0}.eyebrow{font-family:Fell,serif;color:var(--gold);font-size:20px;margin:0 0 18px}.intro h1{font-size:clamp(31px,9vw,52px);line-height:1.1;margin:0 0 22px;font-weight:700;letter-spacing:.03em;text-wrap:pretty}.intro p{margin:0 auto;color:var(--muted);font-size:16px;line-height:2;max-width:300px}.rule{width:70px;height:1px;background:var(--gold);margin:24px auto;opacity:.7}.panel{display:flex;flex-direction:column;align-items:center;gap:14px}.button{border:1px solid var(--gold);background:var(--gold);color:#241516;min-height:50px;padding:0 28px;font:700 15px Baskerville,serif;letter-spacing:.08em;cursor:pointer;transition:.25s ease}.button:hover{background:#f0ce93;transform:translateY(-2px)}.button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}.button.secondary{background:transparent;color:var(--gold);display:none}.button.secondary:hover{background:rgba(215,170,103,.1)}.timer{display:none;width:100%;text-align:center}.timer-label{color:var(--muted);font-size:14px;letter-spacing:.08em}.count{font-family:Fell,serif;font-size:72px;line-height:1;color:var(--gold);margin:13px 0}.progress{height:2px;background:#ffffff18;width:100%;overflow:hidden}.progress i{display:block;height:100%;width:0;background:var(--gold);transition:width 1s linear}.answer{display:none;text-align:center;animation:reveal .9s ease both}.answer .mark{font-size:35px;color:var(--gold);line-height:1;margin-bottom:18px}.answer h2{font-family:Fell,serif;font-size:19px;font-weight:400;color:var(--gold);margin:0 0 18px;letter-spacing:.09em}.answer blockquote{font-size:clamp(21px,5.6vw,30px);line-height:1.65;margin:0 auto;max-width:370px;text-wrap:pretty}.answer .after{color:var(--muted);font-size:13px;line-height:1.8;margin:24px auto 0;max-width:300px}.footer{text-align:center;color:#81716d;font-size:11px;letter-spacing:.15em;text-transform:uppercase}.active .intro{display:none}.active .timer{display:block;margin:auto 0}.revealed .intro,.revealed .timer{display:none}.revealed .answer{display:block;margin:auto 0}.revealed .button.secondary{display:inline-block}.revealed .button.primary{display:none}@keyframes reveal{from{opacity:0;transform:translateY(15px) scale(.98)}to{opacity:1;transform:none}}
+    @media (max-width:420px){main{padding:0}.stage{min-height:100svh;border-left:0;border-right:0;padding:24px 21px 20px}.intro h1{font-size:35px}}
+    @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    .ready .intro{display:none}.ready .timer{display:block;margin:auto 0}.ready .timer-label:after{content:' · 答案已经准备好'}.ready .button.primary{display:inline-block}
+  </style>
+</head>
+<body>
+  <main><section class="stage" id="stage">
+    <div class="brand"><span>北境</span><br>Magic answers, hidden in the glass</div>
+    <div class="intro">
+      <p class="eyebrow">A Letter from Fate</p>
+      <h1>心中想一个问题<br>我能为你解答</h1>
+      <div class="rule"></div>
+      <p>一次只能想一个问题。<br>不要说出来，只在心里想清楚。</p>
+    </div>
+    <div class="panel">
+      <div class="timer" aria-live="polite"><div class="timer-label">正在读取你的问题</div><div class="count" id="count">15</div><div class="progress"><i id="progress"></i></div></div>
+      <div class="answer" aria-live="polite"><div class="mark">✦</div><h2>你的答案是</h2><blockquote id="answerText"></blockquote><p class="after">答案是否准确并不重要。<br>重要的是，你已经开始思考。</p></div>
+      <button class="button primary" id="revealBtn">开始读取答案</button>
+    </div>
+    <div class="footer">北境 · 把答案藏进酒里</div>
+  </section></main>
+  <script>
+    const answers=[
+      '你其实已经知道答案了。', '可以，但不要按照原来的方式。', '再等一等，事情会自己显现。',
+      '这不是结束，是下一步的开始。', '答案取决于你接下来做什么。', '不要追问，今晚会有线索出现。',
+      '你想要的答案，可能换了一种形式。', '先相信直觉，再相信证据。', '现在看似不确定，结果正在变清晰。',
+      '有人会给你答案，但不会直接告诉你。', '如果你愿意迈出第一步，答案就是可以。',
+      '别急着做决定，真正重要的还没发生。', '你会得到答案，只是不是通过你期待的方式。',
+      '答案是肯定的，只是时间还没到。', '答案是否定的，但这可能是件好事。',
+      '今晚先喝完这杯，再决定。', '魔术师建议：相信眼前发生的事。',
+      '你问的不是答案，而是一个勇气。', '这件事值得继续，但不值得执着。',
+      '当你不再害怕失去，答案就会出现。', '先把问题放下，答案会自己找上门。',
+      '你已经走在正确的路上，只是还没走到下一幕。', '有些答案只能被经历，不能被提前知道。',
+      '是时候把选择权交还给自己了。', '你等待的那件事，正在改变方向。',
+      '答案藏在一个看似无关的细节里。', '可以相信这次心动，但别忘了保持清醒。',
+      '今天不适合证明什么，适合享受正在发生的事。', '如果答案让你失望，那就亲手改写它。'
+    ];
+    let lastAnswer=-1,timer;
+    const stage=document.querySelector('#stage'), revealBtn=document.querySelector('#revealBtn'), count=document.querySelector('#count'), progress=document.querySelector('#progress'), answerText=document.querySelector('#answerText');
+    function pick(){let index;do{index=Math.floor(Math.random()*answers.length)}while(index===lastAnswer);lastAnswer=index;return answers[index]}
+    function start(){if(stage.classList.contains('ready')){answerText.textContent=pick();stage.className='stage revealed';return}clearInterval(timer);stage.className='stage active';revealBtn.textContent='请稍候';let seconds=15;count.textContent=seconds;progress.style.width='0%';timer=setInterval(()=>{seconds--;count.textContent=seconds;progress.style.width=((15-seconds)/15*100)+'%';if(seconds<=0){clearInterval(timer);revealBtn.textContent='打开答案';stage.className='stage ready'}},1000)}
+    revealBtn.addEventListener('click',start);
+  </script>
+</body>
+</html>
