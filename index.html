@@ -28,7 +28,7 @@
     <div class="panel">
       <div class="timer" aria-live="polite"><div class="timer-label">正在读取你的问题</div><div class="count" id="count">15</div><div class="progress"><i id="progress"></i></div></div>
       <div class="answer" aria-live="polite"><div class="mark">✦</div><h2>你的答案是</h2><blockquote id="answerText"></blockquote><p class="after">答案是否准确并不重要。<br>重要的是，你已经开始思考。</p></div>
-      <button class="button primary" id="revealBtn">开始读取答案</button><button class="button secondary" id="againBtn">再问一个问题</button>
+      <button class="button primary" id="revealBtn">开始读取答案</button>
     </div>
     <div class="footer">北 Magic Bar · 把答案藏进酒里</div>
   </section></main>
@@ -49,10 +49,10 @@
       '今天不适合证明什么，适合享受正在发生的事。', '如果答案让你失望，那就亲手改写它。'
     ];
     let lastAnswer=-1,timer;
-    const stage=document.querySelector('#stage'), revealBtn=document.querySelector('#revealBtn'), againBtn=document.querySelector('#againBtn'), count=document.querySelector('#count'), progress=document.querySelector('#progress'), answerText=document.querySelector('#answerText');
+    const stage=document.querySelector('#stage'), revealBtn=document.querySelector('#revealBtn'), count=document.querySelector('#count'), progress=document.querySelector('#progress'), answerText=document.querySelector('#answerText');
     function pick(){let index;do{index=Math.floor(Math.random()*answers.length)}while(index===lastAnswer);lastAnswer=index;return answers[index]}
     function start(){if(stage.classList.contains('ready')){answerText.textContent=pick();stage.className='stage revealed';return}clearInterval(timer);stage.className='stage active';revealBtn.textContent='请稍候';let seconds=15;count.textContent=seconds;progress.style.width='0%';timer=setInterval(()=>{seconds--;count.textContent=seconds;progress.style.width=((15-seconds)/15*100)+'%';if(seconds<=0){clearInterval(timer);revealBtn.textContent='打开答案';stage.className='stage ready'}},1000)}
-    revealBtn.addEventListener('click',start);againBtn.addEventListener('click',start);
+    revealBtn.addEventListener('click',start);
   </script>
 </body>
 </html>
