@@ -17,4 +17,4 @@ reply=function(has){if(has)result+=extendedCards[step];step++;if(step<7){showCar
 document.getElementById('start').addEventListener('click',()=>{document.getElementById('yes').style.display='inline-block';document.getElementById('no').style.display='inline-block'});
 document.querySelector('.intro h1').innerHTML='请把一个数字<br>藏在心里';
 reply=function(has){if(has)result+=extendedCards[step];step++;if(step<7){showCard();return}stage.className='stage result';document.querySelector('.intro').style.display='none';document.querySelector('.reading').style.display='none';document.getElementById('start').style.display='none';document.getElementById('yes').style.display='none';document.getElementById('no').style.display='none';document.querySelector('.result').style.display='block';answer.textContent='？';document.querySelector('.result h2').textContent='预言正在解封';setTimeout(()=>{answer.textContent=result;document.querySelector('.result h2').textContent='你刚才想的是这个数字'},3200)};
-</script></body></html>
+</script><script>document.querySelector('.result p:last-of-type').textContent='答案已经出现，今晚的魔法才刚开始。';</script></body></html>
