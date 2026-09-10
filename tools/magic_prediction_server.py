@@ -117,7 +117,7 @@ class Server(ThreadingHTTPServer):
 
 def main() -> None:
     port = int(os.environ.get("PORT", os.environ.get("MAGIC_PORT", "8787")))
-    host = os.environ.get("MAGIC_HOST", "127.0.0.1")
+    host = os.environ.get("MAGIC_HOST", "0.0.0.0" if "PORT" in os.environ else "127.0.0.1")
     server = Server((host, port), Handler)
     public_host = "127.0.0.1" if host == "127.0.0.1" else "0.0.0.0"
     print(f"顾客页：http://{public_host}:{port}/guest")
