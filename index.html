@@ -6,6 +6,6 @@
 <style>.stage.locked .locked{display:block!important;margin:auto 0}.stage.locked .btn{display:inline-block!important}</style><script>
 const stage=document.getElementById('stage'),cards=document.querySelectorAll('.card'),open=document.getElementById('open'),timerEl=document.getElementById('timer'),bar=document.getElementById('bar');let chosen='',timer;
 const data={黑桃A:['♠ A','♠','黑桃A','你选择了黑桃A。\n而这张牌，已经在预言中等你很久了。'],红心Q:['♥ Q','♥','红心Q','你选择了红心Q。\n看来今晚，心动比理智更早抵达。'],梅花K:['♣ K','♣','梅花K','你选择了梅花K。\n今晚的主角，果然是你。'],方块9:['♦ 9','♦','方块9','你选择了方块9。\n你以为这是偶然，其实它早已被写下。']};
-cards.forEach(card=>{card.onclick=()=>{chosen=card.dataset.card;stage.className='stage locked';let n=10;timerEl.textContent=n;bar.style.width='0%';timer=setInterval(()=>{n--;timerEl.textContent=n;bar.style.width=((10-n)*10)+'%';if(n<=0){clearInterval(timer)}},1000)}});
+cards.forEach(card=>{card.onclick=()=>{chosen=card.dataset.card;stage.className='stage locked';document.querySelector('.locked').style.display='block';open.style.display='inline-block';let n=10;timerEl.textContent=n;bar.style.width='0%';timer=setInterval(()=>{n--;timerEl.textContent=n;bar.style.width=((10-n)*10)+'%';if(n<=0){clearInterval(timer)}},1000)}});
 open.onclick=()=>{if(!chosen)return;const d=data[chosen];document.getElementById('corner').textContent=d[0];document.getElementById('corner2').textContent=d[0];document.getElementById('symbol').textContent=d[1];document.getElementById('name').textContent=d[2];document.getElementById('copy').textContent=d[3];stage.className='stage reveal'};
 </script></body></html>
