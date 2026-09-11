@@ -40,6 +40,12 @@ class Handler(BaseHTTPRequestHandler):
     def send_json(self, status: int, value: dict) -> None:
         self.send_body(status, json_bytes(value), "application/json; charset=utf-8")
 
+    def redirect(self, location: str) -> None:
+        self.send_response(302)
+        self.send_header("Location", location)
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+
     def read_json(self) -> dict:
         length = min(int(self.headers.get("Content-Length", "0")), 20_000)
         value = json.loads(self.rfile.read(length) or b"{}")
@@ -51,6 +57,12 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         if parsed.path in {"/", "/guest"}:
+            if parsed.path == "/guest" and not parse_qs(parsed.query).get("code", [""])[0]:
+                code = secrets.token_hex(2).upper()
+                with LOCK:
+                    SESSIONS[code] = {"created": time.time(), "published": False}
+                self.redirect(f"/guest?code={code}")
+                return
             self.send_body(200, GUEST_HTML.read_bytes(), "text/html; charset=utf-8")
             return
         if parsed.path == "/admin":
@@ -64,6 +76,18 @@ class Handler(BaseHTTPRequestHandler):
                 if session and session.get("published"):
                     payload["reveal"] = session.get("reveal", {})
             self.send_json(200, payload)
+            return
+        if parsed.path == "/api/guest-session":
+            code = secrets.token_hex(2).upper()
+            with LOCK:
+                SESSIONS[code] = {"created": time.time(), "published": False}
+            self.send_json(200, {"ok": True, "code": code})
+            return
+        if parsed.path == "/api/sessions" and self.authorized():
+            with LOCK:
+                items = [{"code": code, "published": bool(value.get("published")), "created": value.get("created", 0)} for code, value in SESSIONS.items()]
+            items.sort(key=lambda item: item["created"], reverse=True)
+            self.send_json(200, {"sessions": items[:20]})
             return
         self.send_json(404, {"error": "NOT_FOUND"})
 
