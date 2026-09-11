@@ -85,7 +85,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         if parsed.path == "/api/sessions" and self.authorized():
             with LOCK:
-                items = [{"code": code, "published": bool(value.get("published")), "created": value.get("created", 0)} for code, value in SESSIONS.items()]
+                items = [{"code": code, "published": bool(value.get("published")), "created": value.get("created", 0), "reveal": value.get("reveal", {})} for code, value in SESSIONS.items()]
             items.sort(key=lambda item: item["created"], reverse=True)
             self.send_json(200, {"sessions": items[:20]})
             return
@@ -113,6 +113,11 @@ class Handler(BaseHTTPRequestHandler):
             with LOCK:
                 SESSIONS[code] = {"created": time.time(), "published": False}
             self.send_json(200, {"ok": True, "code": code})
+            return
+        if parsed.path == "/api/clear":
+            with LOCK:
+                SESSIONS.clear()
+            self.send_json(200, {"ok": True})
             return
         if parsed.path == "/api/publish":
             code = str(body.get("code", "")).upper().strip()
