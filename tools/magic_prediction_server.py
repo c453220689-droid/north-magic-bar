@@ -117,13 +117,15 @@ class Handler(BaseHTTPRequestHandler):
         if parsed.path == "/api/publish":
             code = str(body.get("code", "")).upper().strip()
             reveal = {
+                "date": str(body.get("date", "")).strip(),
                 "color": str(body.get("color", "")).strip(),
+                "cocktail": str(body.get("cocktail", "")).strip(),
                 "number": str(body.get("number", "")).strip(),
                 "card": str(body.get("card", "")).strip(),
                 "copy": str(body.get("copy", "")).strip(),
             }
-            if not code or not reveal["color"] or not reveal["number"] or not reveal["card"]:
-                self.send_json(400, {"error": "请填写颜色、数字和牌面"})
+            if not code or not reveal["color"] or not reveal["cocktail"] or not reveal["number"] or not reveal["card"]:
+                self.send_json(400, {"error": "请填写衣服颜色、鸡尾酒、数字和牌面"})
                 return
             with LOCK:
                 if code not in SESSIONS:
