@@ -63,6 +63,11 @@ class Handler(BaseHTTPRequestHandler):
                     SESSIONS[code] = {"created": time.time(), "published": False}
                 self.redirect(f"/guest?code={code}")
                 return
+            if parsed.path == "/guest":
+                code = parse_qs(parsed.query).get("code", [""])[0].upper().strip()
+                if code:
+                    with LOCK:
+                        SESSIONS.setdefault(code, {"created": time.time(), "published": False})
             self.send_body(200, GUEST_HTML.read_bytes(), "text/html; charset=utf-8")
             return
         if parsed.path == "/admin":
